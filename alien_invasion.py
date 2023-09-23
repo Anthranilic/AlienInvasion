@@ -79,7 +79,7 @@ class AlienInvasion:
         logger.debug("_start_game() called")
 
         # reset the game statistics.
-        self.stats.reset_stats()
+        # self.stats.reset_stats()
         self.game_active = True
 
         # get rid of any remaining bullets and aliens.
@@ -118,6 +118,7 @@ class AlienInvasion:
         elif event.key == pygame.K_p and not self.game_active:
             logger.debug("P key pressed")
             self.stats.reset_stats()
+            self.sb.prep_score()
             self._start_game()
 
     def _check_keyup_events(self, event):
