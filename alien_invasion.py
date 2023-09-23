@@ -1,3 +1,7 @@
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 import sys, pygame
 from time import sleep
 
@@ -72,6 +76,8 @@ class AlienInvasion:
 
     def _start_game(self):
         """Start the game."""
+        logger.debug("_start_game() called")
+
         # reset the game statistics.
         self.stats.reset_stats()
         self.game_active = True
@@ -109,7 +115,9 @@ class AlienInvasion:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif event.key == pygame.K_p:
+        elif event.key == pygame.K_p and not self.game_active:
+            logger.debug("P key pressed")
+            self.stats.reset_stats()
             self._start_game()
 
     def _check_keyup_events(self, event):
@@ -218,6 +226,8 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
+        logger.debug("_ship_hit() called")
+
         if self.stats.ships_left > 0:
             # decrement ships_left, and update scoreboard
             self.stats.ships_left -= 1

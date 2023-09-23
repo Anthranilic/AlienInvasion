@@ -1,3 +1,7 @@
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 import pygame.font
 from pygame.sprite import Group
 
@@ -26,6 +30,8 @@ class Scoreboard:
     
     def prep_score(self):
         """Turn the score into a rendered image."""
+        logger.debug("Preparing score (score: %s)", self.stats.score)
+
         rounded_score = round(self.stats.score, -1)
         score_str = f"{rounded_score:,}"
         self.score_image = self.font.render(score_str, True, self.text_color, self.settings.bg_color)
@@ -44,6 +50,8 @@ class Scoreboard:
     
     def prep_high_score(self):
         """Turn the high score into a rendered image."""
+        logger.debug("Preparing high score (high_score: %s)", self.stats.high_score)
+        
         high_score = round(self.stats.high_score, -1)
         high_score_str = f"{high_score:,}"
         self.high_score_image = self.font.render(high_score_str, True, self.text_color, self.settings.bg_color)
@@ -54,9 +62,13 @@ class Scoreboard:
         self.high_score_rect.top = self.score_rect.top
     
     def check_high_score(self):
-        """Check to see if there's a new high score."""
+        """
+        Check to see if there's a new high score and all time high score.
+        If there is a new all time high score, record it in a local file.
+        """
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
+            self.stats.high_score_path.write_text(str(self.stats.high_score))
             self.prep_high_score()
     
     def prep_level(self):
