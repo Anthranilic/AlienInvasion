@@ -1,6 +1,7 @@
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+logging.disable(logging.CRITICAL + 1)
 
 import pygame.font
 from pygame.sprite import Group
@@ -12,6 +13,14 @@ class Scoreboard:
 
     def __init__(self, ai_game):
         """Initialize scorekeeping attributes."""
+        # TODO: also make four separate method calls in the __init__()
+        # method in Scoreboard to a method called prep_images()
+        # to shorten __init__()
+
+        # The prep_images() method could also help simplify the
+        # _check_play_button() or start_game() if already refactored
+        # _check_play_button()
+
         self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
@@ -22,12 +31,15 @@ class Scoreboard:
         self.text_color = (30, 30, 30)
         self.font = pygame.font.SysFont(None, 48)
 
-        # prepare the initial score images.
+        self.prep_images()
+    
+    def prep_images(self):
+        """Prepares the images of the score, high score, level and ship lives.""" 
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
         self.prep_ships()
-    
+
     def prep_score(self):
         """Turn the score into a rendered image."""
         logger.debug("Preparing score (score: %s)", self.stats.score)

@@ -1,6 +1,7 @@
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+logging.disable(logging.CRITICAL + 1)
 
 import sys, pygame
 from time import sleep
@@ -99,9 +100,7 @@ class AlienInvasion:
         if button_clicked and not self.game_active:
             # reset the game settings.
             self.stats.reset_stats()
-            self.sb.prep_score()
-            self.sb.prep_level()
-            self.sb.prep_ships()
+            self.sb.prep_images()
             if self.play_button.rect.collidepoint(mouse_pos):
                 self._start_game()
 
@@ -145,7 +144,7 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
         
         self._check_bullet_alien_collisions()
-    
+
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
         # remove any bullets and aliens that have collided.
@@ -158,14 +157,18 @@ class AlienInvasion:
             self.sb.check_high_score()
 
         if not self.aliens:
-            # destroy existing bullets and create new fleet.
-            self.bullets.empty()
-            self._create_fleet()
-            self.settings.increase_speed()
+            self.start_new_level()
 
-            # increase level
-            self.stats.level += 1
-            self.sb.prep_level()
+    def start_new_level(self):
+        """Starts a new level."""
+        # destroy existing bullets and create new fleet.
+        self.bullets.empty()
+        self._create_fleet()
+        self.settings.increase_speed()
+
+        # increase level
+        self.stats.level += 1
+        self.sb.prep_level()
 
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions."""
