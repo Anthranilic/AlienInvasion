@@ -12,10 +12,16 @@ class Settings:
         self.ship_limit = 3
 
         # bullet settings
-        self.bullet_width = 3000
+        self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
+
+        # alien bullet settings
+        self.alien_bullet_width = 3
+        self.alien_bullet_height = 15
+        self.alien_bullet_color = (255, 0, 0)
+        self.alien_bullets_allowed = 5
 
         # alien settings
         self.fleet_drop_speed = 10
@@ -36,6 +42,8 @@ class Settings:
         self.ship_speed = 1.5
         self.bullet_speed = 2.5
         self.alien_speed = 1.0
+        self.alien_bullet_speed = 1.0
+        self.alien_bullets_chance = 500
 
         # fleet direction of 1 represents right; -1 represents left.
         self.fleet_direction = 1
@@ -47,6 +55,8 @@ class Settings:
         """Increase speed settings and alien point values."""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
+        self.alien_bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+        self.alien_bullets_chance /= self.speedup_scale
 
         self.alien_points = int(self.alien_points * self.score_scale)
